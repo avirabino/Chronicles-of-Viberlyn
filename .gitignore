@@ -1,0 +1,75 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Game specific
+*.save
+*.log
+*.cache
+*.tmp
+*.bak
+
+# Asset files (if using external assets)
+# Uncomment if you want to track assets in Git
+# assets/models/*
+# assets/textures/*
+# assets/sounds/*
+# assets/music/*
+
+# Documentation
+# Uncomment if you want to exclude documentation
+# docs/_build/
+# docs/_static/
+# docs/_templates/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Distribution
+dist/
+build/
+*.egg-info/ 
