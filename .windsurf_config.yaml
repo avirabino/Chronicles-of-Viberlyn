@@ -1,6 +1,12 @@
 # .windsurf_config.yaml
 # Approved configuration for Chronicles of Viberlyn - 2025-04-17
 
+# --- Windsurf Metadata ---
+# Assistant: Core
+# Created: 2025-04-17
+# Modified: 2025-04-18
+# --- End Windsurf Metadata ---
+
 assistants:
   - name: FE_NextJS_Core
     description: Manages core Next.js app setup, layout, generic non-game UI components (e.g., settings forms), PWA config.
@@ -52,5 +58,37 @@ assistants:
       - prd.md
       - todo.md
       - docs/**
+
+  - name: FE_VideoPlayer
+    description: Manages all frontend code, UI, and logic for the VideoPlayer module, including styling, accessibility, and integration with backend endpoints. Follows visual style guide and animation requirements.
+    scope:
+      - frontend/src/components/VideoPlayer/**
+      - frontend/src/types/videoPlayer.ts
+      - frontend/src/utils/videoPlayerUtils.ts
+
+  - name: BE_VideoPlayer
+    description: Handles backend endpoints, data models, and logic for video/narration playback, including serving intro-video.json and related assets. Responsible for backend validation and testing.
+    scope:
+      - backend/app/routers/video.py
+      - backend/app/services/video_player.py
+      - backend/app/tests/test_video_player.py
+      - tests/unit/test_video_endpoint.py
+      - tests/system/test_video_player.py
+
+  - name: FE_Menu
+    description: Manages all frontend code, UI, and logic for the Main Menu, including story selection, settings, and save management. Ensures adherence to style guide and accessibility.
+    scope:
+      - frontend/src/components/Menu/**
+      - frontend/src/types/menu.ts
+      - frontend/src/utils/storyManager.ts
+
+  - name: BE_Menu
+    description: Handles backend endpoints and logic for menu actions, story listing, and activation. Responsible for robust API design and backend tests.
+    scope:
+      - backend/app/routers/stories.py
+      - backend/app/services/menu.py
+      - backend/app/tests/test_menu.py
+      - tests/unit/test_stories_endpoint.py
+      - tests/system/test_stories.py
 
 # Optional: Define global rules or project-specific settings if needed
