@@ -1,0 +1,31 @@
+# --- Windsurf Metadata ---
+# Assistant: Core
+# Created: 2025-04-18
+# Modified: 2025-04-18
+# --- End Windsurf Metadata ---
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore virtual environments
+venv/
+
+# Ignore Node modules
+frontend/node_modules/
+
+# Ignore frontend build output
+frontend/.next/
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore asset files
+assets/
+*.ckpt
+*.pt
+
+# Ignore OS files
+.DS_Store
+Thumbs.db

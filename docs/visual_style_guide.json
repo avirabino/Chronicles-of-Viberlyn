@@ -1,0 +1,235 @@
+{
+  "game": {
+    "title": "Chronicles of Viberlyn",
+    "aesthetic": {
+      "description": "Retro-modern fantasy RPG blending pixel-art simplicity with painterly atmospheric effects",
+      "inspirations": [
+        {"title": "Hillsfar, Ultima VI", "aspect": "Retro exploration, bold simplicity"},
+        {"title": "Octopath Traveler, Hyper Light Drifter", "aspect": "Modern lighting depth, atmospheric effects"},
+        {"title": "Zelda: Link's Awakening Remake", "aspect": "Simple shapes, high detail"}
+      ],
+      "guidelines": {
+        "retro": "Bold 1-2px outlines, limited palettes, pixelated textures",
+        "modern": "Subtle gradients, ambient lighting (glows, flickers, mists), painterly depth",
+        "rendering": "3D shapes (cubes, rectangles) projected as 2D using Three.js, with 256x256 PNG textures"
+      }
+    }
+  },
+  "factions": {
+    "evilEmpire": {
+      "theme": "Tyranny, Dark Magic, Control",
+      "colors": {
+        "primary": {"name": "Crimson", "hex": "#8B0000", "uses": ["Flags", "flames", "capes"]},
+        "secondary": {"name": "Charcoal", "hex": "#333333", "uses": ["Armor", "stonework", "towers"]},
+        "accent": {"name": "Gold", "hex": "#FFD700", "uses": ["Sigils", "officer trim", "flags"]}
+      },
+      "textureStyle": "Harsh geometry, cracked stone, arcane metal with sharp edges",
+      "fx": [
+        {"type": "flame", "color": "red/orange", "fps": 24, "opacitySwing": "50%", "cycle": "1s"},
+        {"type": "shadows", "color": "charcoal", "cycle": "1s", "opacity": "20%"}
+      ]
+    },
+    "freedomFighters": {
+      "theme": "Nature, Rebellion, Earth",
+      "colors": {
+        "primary": {"name": "Forest Green", "hex": "#228B22", "uses": ["Cloaks", "tree canopies", "rooftops"]},
+        "secondary": {"name": "Sandstone", "hex": "#F4A460", "uses": ["Roads", "walls", "leather"]},
+        "accent": {"name": "Silver", "hex": "#C0C0C0", "uses": ["Tools", "weapon edges", "UI text"]},
+        "contrast": {"name": "Darker Sandstone", "hex": "#D2691E", "uses": ["Background for silver text"]}
+      },
+      "textureStyle": "Woodgrain, mossy surfaces, natural fabrics with organic patterns",
+      "fx": [
+        {"type": "lanternGlow", "color": "warm", "fps": 24, "brightnessPulse": "30%", "cycle": "1.5s"},
+        {"type": "firefly", "color": "#228B22", "movement": "random drift", "cycle": "2s"}
+      ]
+    },
+    "ancientSociety": {
+      "theme": "Mysticism, Lost Knowledge",
+      "colors": {
+        "primary": {"name": "Indigo", "hex": "#4B0082", "uses": ["Stones", "glyphs", "robes"]},
+        "secondary": {"name": "Ivory", "hex": "#FFFFF0", "uses": ["Marble", "ancient scrolls", "floors"]},
+        "accent": {"name": "Teal", "hex": "#00CED1", "uses": ["Relics", "mist", "arcane energy"]}
+      },
+      "textureStyle": "Elegant ruins, smooth carved surfaces with glowing runes",
+      "fx": [
+        {"type": "mist", "color": "#00CED1", "movement": "linear", "cycle": "2s", "opacity": "20%"},
+        {"type": "glyphs", "color": "teal", "cycle": "1.5s", "brightness": "30%"},
+        {"type": "shimmer", "color": "#00CED1", "fps": 24}
+      ]
+    }
+  },
+  "assets": {
+    "textures": {
+      "baseStyle": "3D cubes/rectangles, rendered in top-down or angled 2D",
+      "resolution": "256x256 PNGs, tileable for seamless grids",
+      "outlines": "1-2px bold dark borders (#1A1A1A) for retro clarity",
+      "shading": "Light inner gradient (center 100% brightness, edges 70%) for modern depth",
+      "overlays": "Add glows (30% opacity, faction-colored) or motion blur for relics, torches, and magical items"
+    },
+    "environment": {
+      "walls": {
+        "empire": "Dark cracked stone (#333333) with crimson streaks (#8B0000)",
+        "freedom": "Warm earthy stone (#F4A460) with green moss patches (#228B22)",
+        "society": "Rune-inscribed marble (#FFFFF0) with indigo etchings (#4B0082)"
+      },
+      "floors": {
+        "grass": {"color": "#228B22"},
+        "road": {"color": "#F4A460"},
+        "water": {"color": "#4682B4"},
+        "brick": {"color": "#D2691E"}
+      },
+      "mist": {
+        "empire": {"color": "#333333", "opacity": "20%", "movement": "linear", "cycle": "2s"},
+        "freedom": {"color": "#228B22", "opacity": "20%", "movement": "linear", "cycle": "2s"},
+        "society": {"color": "#00CED1", "opacity": "20%", "movement": "linear", "cycle": "2s"}
+      },
+      "lighting": {
+        "torches": "Faction-specific glow (24fps, 50% opacity swing)",
+        "relics": "Teal bloom (#00CED1, 1.5s pulse)",
+        "portals": "Pulsating glow (faction-colored, 1s cycle)",
+        "shadows": "Subtle drop shadows (10% opacity, #1A1A1A)"
+      }
+    }
+  },
+  "maps": {
+    "global": {
+      "purpose": "Static parchment map showing all regions as markers",
+      "style": "Retro hand-drawn, parchment background (#DEB887), bold 2px outlines (#1A1A1A)",
+      "regions": [
+        {"name": "Elderglow (Vale)", "marker": {"color": "#228B22"}},
+        {"name": "Tharovant", "marker": {"color": "#F4A460"}},
+        {"name": "Noxvale (volcano)", "marker": {"color": "#8B0000", "effect": "fiery orange glow"}},
+        {"name": "Harrowspire (mountains)", "marker": {"color": "#333333"}},
+        {"name": "Viremoor (ruins)", "marker": {"color": "#4B0082", "effect": "teal glow (#00CED1)"}}
+      ],
+      "fx": {
+        "magicalSites": "Glowing cyan markers (teal #00CED1)",
+        "dangerZones": "Fiery orange spots"
+      },
+      "details": "Gold-accented compass rose (#FFD700, bottom-right), blue oceans (#4682B4)"
+    },
+    "regional": {
+      "size": "50x50 Tiles",
+      "purpose": "Main explorable map for mini-adventure",
+      "style": "Top-down retro map, 1px grid lines (#1A1A1A), bold faction borders",
+      "elements": {
+        "village": "Green roofs (#228B22), sandstone paths (#F4A460)",
+        "ruins": "Indigo stone (#4B0082), teal glow (#00CED1)",
+        "outpost": "Crimson walls (#8B0000), charcoal towers (#333333)",
+        "forests": {"color": "#228B22"},
+        "roads": {"color": "#F4A460"},
+        "rivers": {"color": "#4682B4"}
+      },
+      "fx": {
+        "ruins": "Teal mist (#00CED1, 20% opacity, 2s drift)",
+        "unexplored": "Gray fog of war (50% opacity)"
+      }
+    },
+    "local": {
+      "size": "20x20 Tiles",
+      "purpose": "Detailed maps for specific locations",
+      "style": "Top-down retro map, 1px grid lines, bold 2px outlines (#1A1A1A)",
+      "locations": {
+        "village": {
+          "elements": "Green-roofed houses, sandstone paths, silver-decorated shop, grass terrain",
+          "fx": "Green-flamed torches (24fps flicker), firefly particles (2s drift)"
+        },
+        "ruins": {
+          "elements": "Indigo pillars, ivory floors, teal-glowing relic, cracked stone terrain",
+          "fx": "Teal mist (20% opacity, 2s drift), relic glow (1.5s pulse)"
+        },
+        "outpost": {
+          "elements": "Crimson walls, charcoal towers, gold flags, dark stone terrain",
+          "fx": "Red-flamed torches (24fps flicker), pulsating shadows (1s cycle)"
+        }
+      }
+    }
+  },
+  "ui": {
+    "components": {
+      "miniMap": {
+        "frame": {"color": "#8B0000"},
+        "fill": {"color": "#333333"},
+        "indicator": {"color": "#FFD700", "animation": "1s pulse"}
+      },
+      "statsBar": {
+        "panel": {"color": "#F4A460"},
+        "labels": {"color": "#C0C0C0", "background": "#D2691E"},
+        "animation": "subtle fade-in (1s)"
+      },
+      "inventorySlots": {
+        "border": {"color": "#00CED1", "animation": "1.5s pulse"},
+        "fill": {"color": "#FFFFF0"},
+        "hover": "slight glow (30% brightness increase)"
+      },
+      "dialogueBox": {
+        "frame": {"color": "#4B0082"},
+        "background": {"color": "#FFFFF0", "texture": "parchment"},
+        "animation": "text fade-in (0.5s)"
+      },
+      "storyJournal": {
+        "background": {"color": "#F4A460"},
+        "tabs": {"color": "#4B0082"},
+        "textArea": {"color": "#FFFFF0"}
+      }
+    },
+    "typography": {
+      "fonts": {
+        "primary": {
+          "name": "Enchanted Land",
+          "uses": ["headings", "quest titles", "important UI elements"],
+          "styling": "Bold, slightly elongated, runic serifs",
+          "sizes": {
+            "mainTitles": "24pt",
+            "sectionHeaders": "18pt",
+            "uiElements": "16pt"
+          },
+          "colors": {
+            "empire": "#FFD700",
+            "freedom": "#C0C0C0",
+            "ancient": "#00CED1"
+          }
+        },
+        "secondary": {
+          "name": "Arcane Script",
+          "uses": ["magical text", "ancient writings", "runes"],
+          "styling": "Thin, flowing letterforms with subtle glow effects",
+          "sizes": {
+            "readableScript": "16pt",
+            "backgroundRunes": "12pt"
+          },
+          "colors": "Faction-specific with 20% opacity glow"
+        },
+        "body": {
+          "name": "Viberlyn Common",
+          "uses": ["dialogue", "descriptions", "general UI"],
+          "styling": "Clear, readable pixel font with subtle fantasy elements",
+          "sizes": {
+            "mainUI": "14pt",
+            "descriptions": "12pt",
+            "smallDetails": "10pt"
+          },
+          "colors": {"text": "#333333", "background": "#FFFFF0"}
+        }
+      },
+      "textEffects": {
+        "gradientText": "Gold-to-crimson gradient (#FFD700 to #8B0000) for Empire-related headers",
+        "letterpressEffect": "1px inner shadow on Freedom Fighter headers",
+        "glowingText": "Subtle teal glow (20% opacity) on Ancient Society text elements"
+      },
+      "accessibility": {
+        "contrast": "Ensure contrast ratios meet WCAG 4.5:1",
+        "textSize": "Option to increase by 20% for all UI elements",
+        "alternateFont": "Dyslexia-friendly font that maintains fantasy aesthetic"
+      }
+    },
+    "animations": {
+      "questText": {
+        "reveal": "Characters fade in sequentially (50ms per character) with slight vertical motion",
+        "empireStyle": "Crimson text with gold glow (30% opacity) that intensifies on completion",
+        "freedomStyle": "Green text with silver shimmer effect (left-to-right, 2s)",
+        "ancientStyle": "Indigo text with teal runes that materialize behind text (0.5s fade-in)"
+      },
+      "buttons": {
+        "hover": "Scale increase (105%, 0.2s), brightness boost (15%), subtle faction-colored glow",
+        "click": "Quick pulse effect (scale

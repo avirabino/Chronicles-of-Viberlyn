@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: sqlite
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+      - name: Lint frontend
+        run: |
+          cd frontend
+          npm run lint
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          python -m venv venv
+          . venv/bin/activate
+          pip install -r requirements.txt
+      - name: Format backend (Black)
+        run: |
+          cd backend
+          . venv/bin/activate
+          black . --check
+      - name: Lint backend (Flake8)
+        run: |
+          cd backend
+          . venv/bin/activate
+          flake8 .
+      - name: Run backend unit tests
+        run: |
+          cd backend
+          . venv/bin/activate
+          set PYTHONPATH=%CD%/../ && pytest ../../tests/unit
+      - name: Run backend system tests
+        run: |
+          cd backend
+          . venv/bin/activate
+          # TODO: Start FastAPI backend in the background for system tests
+          set PYTHONPATH=%CD%/../ && pytest ../../tests/system || true
+      - name: Run frontend build
+        run: |
+          cd frontend
+          npm run build

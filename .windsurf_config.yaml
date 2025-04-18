@@ -1,0 +1,56 @@
+# .windsurf_config.yaml
+# Approved configuration for Chronicles of Viberlyn - 2025-04-17
+
+assistants:
+  - name: FE_NextJS_Core
+    description: Manages core Next.js app setup, layout, generic non-game UI components (e.g., settings forms), PWA config.
+    scope:
+      - frontend/src/
+      - frontend/public/      
+      - frontend/next.config.mjs
+      - frontend/tsconfig.json      
+  
+  - name: FE_NextJS_API
+    description: Manages Next.js API route handlers (route.ts files) for frontend-backend communication.
+    scope:
+      - frontend/src/app/api/**
+
+  - name: BE_Python_API
+    description: Manages the Python backend's FastAPI application setup, routing, request/response schemas (Pydantic).
+    scope:
+      - backend/app/main.py
+      - backend/app/api/**
+      - backend/app/schemas/**
+
+  - name: Design_UIUX
+    description: Responsible for the visual design, style consistency, and user experience guidelines. Owns visual assets and core styling configuration.
+    scope:
+      - visual_style_guide.md
+      - frontend/tailwind.config.ts
+      - frontend/postcss.config.js
+      - frontend/src/styles/** # Global CSS, base styles
+      - common_assets/images/** # Visual assets like logos, backgrounds
+      - frontend/public/fonts/** # If custom fonts are added
+
+  - name: QA_Tests
+    description: Manages frontend (Cypress/Playwright) and backend (Pytest) automated tests.
+    scope:
+      - frontend/cypress/** # Or playwright/**
+      - backend/tests/**
+      - frontend/playwright.config.ts # Or similar testing config
+      - backend/pytest.ini # Or similar testing config
+
+  - name: Mgmt_Project
+    description: Manages overall project configuration, documentation (README, PRD, TODO), root-level files, and dependency management.
+    scope:
+      - .windsurf*
+      - .git*
+      - package.json
+      - package-lock.json
+      - backend/requirements.txt # Or pyproject.toml
+      - README.md
+      - prd.md
+      - todo.md
+      - docs/**
+
+# Optional: Define global rules or project-specific settings if needed

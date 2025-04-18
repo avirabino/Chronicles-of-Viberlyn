@@ -1,0 +1,24 @@
+{
+  "name": "config.json",
+  "version": "1.0",
+  "date": "13-04-2025",
+  "auther": "Avidor Rabinovich",
+  "game_settings": {
+    "difficulty": "Normal",
+    "available_difficulties": ["Easy", "Normal", "Hard"],
+    "text_speed": "Normal",
+    "available_text_speeds": ["Slow", "Normal", "Fast"],
+    "sound_volume": 80,
+    "music_volume": 60,
+    "audio_enabled": true,
+    "fullscreen_preference": false,
+    "world_size": [20, 20]
+  },
+  "story_management": {
+    "main_story_id": "the_relic_of_elderglow",
+    "main_story_uuid": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "stories_enabled": [ 
+      "a1b2c3d4-e5f6-7890-1234-567890abcdef"      
+    ]
+  }
+}

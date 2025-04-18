@@ -1,0 +1,359 @@
+# Project Local Rules for Windsurf
+
+These rules supplement the Global Operating Rules and provide technology-specific guidelines for assistants working on this project. They define the expected coding standards, patterns, and best practices for the chosen frontend and backend stacks.
+
+---
+## General rules 
+### 📌 Important Project Rules
+- **Documentation**: Always reference the primary project documentation (`prd.md` and `todo.md`) before beginning any task.
+- **Documentation Location**: All project specifications and documentation are located within the `\docs` directory.
+- **Agentic Team**: Team members and their roles are outlined in the `.windsurf_config.yaml` file. Always explicitly assign yourself as a designated role when executing tasks.
+
+## Frontend Local Rules (Assistant Scope Example: `FE_NextJS_*`)
+
+**Stack:** Next.js 14 (App Router), TypeScript, Tailwind CSS
+
+**Applies to:** Any assistant whose scope includes `.tsx`, `.ts` (frontend-related), `.css` files within the frontend directory structure (e.g., `src/app`, `src/components`, `src/lib/frontend`).
+
+### I. Key Requirements & Principles
+
+1.  **App Router:** Implement all UI within the Next.js `app` directory structure.
+2.  **Server Components First:** Default to Server Components for data fetching and rendering non-interactive UI. Use Client Components (`'use client'`) **only** when essential for interactivity (requiring hooks like `useState`, `useEffect`, `useContext`, or event listeners).
+3.  **TypeScript:**
+    * Use modern TypeScript syntax with strict typing enabled.
+    * Define explicit `interface` definitions for component props.
+    * Let TypeScript **infer** types where possible, especially for component return values and simple variable assignments. Avoid redundant type annotations.
+4.  **Tailwind CSS:**
+    * Use Tailwind CSS utility classes **exclusively** for styling directly within TSX components.
+    * Avoid inline `style={{}}` objects.
+    * Avoid creating separate `.css` or `.module.css` files unless absolutely necessary for complex global styles, animations, or third-party library overrides.
+5.  **Responsive Design:** Ensure layouts are fully responsive using Tailwind's built-in breakpoint modifiers (e.g., `sm:`, `md:`, `lg:`, `xl:`). Design mobile-first where practical.
+6.  **Component Architecture:**
+    * Create modular, reusable **functional components**.
+    * Organize components logically (e.g., `src/components/ui/` for generic elements, `src/components/features/feature-name/` for feature-specific components).
+7.  **Data Fetching:**
+    * Primarily use Server Components with `async`/`await` and the native `Workspace` API for data fetching.
+    * Implement appropriate server-side caching (`cache`, `no-store`) and revalidation (`next: { revalidate: seconds }`) strategies directly within `Workspace` options.
+8.  **Metadata API:** Utilize Next.js 14's Metadata API (`metadata` object or `generateMetadata` function) in `layout.tsx` and `page.tsx` files for effective SEO.
+9.  **Image Optimization:** Always use the `next/image` component for rendering images to leverage automatic optimization.
+10. **Accessibility (A11y):** Ensure semantic HTML structure (use `<nav>`, `<main>`, `<aside>`, `<button>`, etc., appropriately) and apply necessary ARIA attributes to meet WCAG guidelines.
+11. **Error Handling:** Implement `error.tsx` files within route segments to create user-friendly error boundaries for segment-level errors.
+12. **Loading States:** Utilize `loading.tsx` files to provide instant loading UI during route transitions and server-side data fetching.
+13. **API Routes (Route Handlers):** Implement backend API endpoints integrated within the Next.js app using Route Handlers (`app/api/.../route.ts`).
+14. **Rendering Strategies:** Leverage Static Site Generation (SSG - default behavior), Server-Side Rendering (SSR - via dynamic functions or `dynamic = 'force-dynamic'`), and Incremental Static Regeneration (ISR - via `revalidate` option) as appropriate for the specific page/data requirements.
+
+### II. Code Generation Style & Conventions
+
+1.  **Client Components:** Add the `'use client'` directive at the very top of the file **only** when creating Client Components.
+2.  **Component Definition:** Use concise arrow function syntax. Let TypeScript infer the return type.
+    ```tsx
+    // Preferred: Type inference for return value
+    const MyComponent = () => {
+      return <div>Hello</div>;
+    };
+    ```
+3.  **Props:** Define props using `interface`. Destructure props in the component signature with type annotation.
+    ```tsx
+    interface MyComponentProps {
+      message: string;
+      count?: number; // Optional prop
+    }
+
+    // Destructure props with type annotation
+    const MyComponent = ({ message, count = 0 }: MyComponentProps) => {
+      return <div>{message} - Count: {count}</div>;
+    };
+    ```
+4.  **Exports:**
+    * Use **named exports** for reusable components (e.g., in `src/components/`).
+    * Use **default exports** for Page components (`page.tsx`) and Layout components (`layout.tsx`).
+    ```tsx
+    // src/components/ui/Button.tsx
+    export const Button = ({ ... }: ButtonProps) => { /* ... */ };
+
+    // src/app/dashboard/page.tsx
+    const DashboardPage = () => { /* ... */ };
+    export default DashboardPage;
+    ```
+5.  **Explicit Typing (Avoid if Possible):** Avoid explicit return type annotations like `: React.FC` or `: React.ReactNode` on components unless there's a specific, complex scenario (e.g., generics, HOCs) where inference fails or clarity demands it. Prefer inference.
+6.  **Data Fetching (Server Components Example):**
+    ```tsx
+    async function getData(id: string) {
+      // Example with revalidation every hour
+      const res = await fetch(`https://api.example.com/items/${id}`, { next: { revalidate: 3600 } });
+      if (!res.ok) {
+        // This will activate the closest `error.js` Error Boundary
+        throw new Error('Failed to fetch data');
+      }
+      return res.json(); // Assumes JSON response
+    }
+
+    // Example Page component using the fetched data
+    export default async function ItemPage({ params }: { params: { id: string } }) {
+      const itemData = await getData(params.id);
+      return (
+        <main>
+          <h1>{itemData.name}</h1>
+          {/* ... render rest of the item data */}
+        </main>
+      );
+    }
+    ```
+7.  **Metadata Example:**
+    ```tsx
+    import type { Metadata } from 'next';
+
+    // Static Metadata
+    export const metadata: Metadata = {
+      title: 'My Page Title',
+      description: 'This is the page description for SEO.',
+    };
+
+    // Dynamic Metadata (Example)
+    // export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+    //   const product = await fetch(`.../products/${params.id}`).then((res) => res.json());
+    //   return {
+    //     title: product.title,
+    //     description: product.description,
+    //   };
+    // }
+    ```
+8.  **Error Boundary Example (`error.tsx`):**
+    ```tsx
+    'use client'; // Error components must be Client Components
+
+    import { useEffect } from 'react';
+
+    export default function ErrorBoundary({
+      error,
+      reset,
+    }: {
+      error: Error & { digest?: string };
+      reset: () => void; // Function to attempt recovery (re-render segment)
+    }) {
+      useEffect(() => {
+        // Log the error to an error reporting service
+        console.error(error);
+      }, [error]);
+
+      return (
+        <div>
+          <h2>Something went wrong in this section!</h2>
+          <p>{error.message}</p>
+          <button
+            onClick={
+              // Attempt to recover by trying to re-render the segment
+              () => reset()
+            }
+          >
+            Try again
+          </button>
+        </div>
+      );
+    }
+    ```
+9.  **Loading UI Example (`loading.tsx`):**
+    ```tsx
+    // Simple loading component
+    export default function Loading() {
+      // You can add any UI inside Loading, including a Skeleton.
+      return <div>Loading page data...</div>;
+      // Or use a spinner, skeleton components, etc.
+      // Example: return <Spinner />;
+    }
+    ```
+
+---
+
+## Backend Local Rules (Assistant Scope Example: `BE_FastAPI_*`)
+
+**Stack:** Python (3.10+ recommended), FastAPI, Pydantic V2, SQLAlchemy 2.0 (Async support preferred if used)
+
+**Applies to:** Any assistant whose scope includes `.py` files within the backend directory structure (e.g., `src/backend/routers`, `src/backend/services`, `src/backend/models`, `src/backend/crud`, `src/backend/schemas`).
+
+### I. Key Requirements & Principles
+
+1.  **Conciseness & Readability:** Write clear, idiomatic, PEP 8 compliant Python code. Use descriptive variable and function names (e.g., `is_active`, `get_user_by_id`, `process_order_update`).
+2.  **Functional Approach:**
+    * Prefer plain functions (`def`) for synchronous logic and `async def` for asynchronous operations.
+    * Minimize the use of custom classes for pure logic. Utilize classes primarily where required by frameworks (e.g., Pydantic `BaseModel`, SQLAlchemy ORM mapped classes) or for well-defined stateful objects if necessary.
+3.  **Modularity & DRY:** Break down logic into smaller, focused, reusable functions and modules. Actively avoid duplicating code; refactor common logic into utility functions or services.
+4.  **Typing:**
+    * Use Python type hints for **all** function signatures (arguments and return types).
+    * Use Pydantic `BaseModel` subclasses for defining data shapes (request bodies, response models, configuration). Avoid using raw dictionaries for structured data transfer.
+5.  **Async First:** All I/O-bound operations (database interactions, external API calls, file system access) **must** be asynchronous (`async`/`await`). Use compatible asynchronous libraries (e.g., `asyncpg`, `aiomysql`, `httpx`, `aiofiles`).
+6.  **RORO Pattern (Receive Object, Return Object):** Functions and API endpoints should ideally accept well-defined objects (e.g., Pydantic models, specific typed arguments) and return well-defined objects or types.
+7.  **File/Directory Naming:** Use `lowercase_with_underscores` (snake_case) for all Python files and directories.
+8.  **Exports:** Use standard Python import/export mechanisms. Favor explicit imports.
+
+### II. FastAPI Specific Guidelines
+
+1.  **Route Definitions:**
+    * Use FastAPI's declarative decorators (`@router.get`, `@router.post`, etc.) within `APIRouter` instances.
+    * Provide clear type hints for path parameters, query parameters, and request bodies (using Pydantic models).
+    * Specify the `response_model` argument in decorators using a Pydantic model to ensure response validation and OpenAPI schema generation.
+    * Define appropriate HTTP status codes (`status_code=...`).
+    ```python
+    from fastapi import APIRouter, HTTPException, Depends, status
+    from pydantic import BaseModel
+    from typing import List # Use typing imports
+    from sqlalchemy.ext.asyncio import AsyncSession # Example async session
+
+    # --- Schemas (e.g., in schemas/user_schema.py) ---
+    class UserCreate(BaseModel):
+        email: str
+        password: str # Remember to hash this!
+
+    class UserResponse(BaseModel):
+        id: int
+        email: str
+        is_active: bool = True
+
+        class Config:
+            from_attributes = True # For Pydantic V2 ORM mode
+
+    # --- Router (e.g., in routers/user_routes.py) ---
+    router = APIRouter(prefix="/users", tags=["Users"])
+
+    # Assume get_db_session is an async dependency providing an AsyncSession
+    # Assume user_crud contains async functions like create_db_user, get_db_user
+
+    @router.post(
+        "/",
+        response_model=UserResponse,
+        status_code=status.HTTP_201_CREATED
+    )
+    async def create_user(
+        user_in: UserCreate,
+        db: AsyncSession = Depends(get_db_session) # Example Dependency
+    ):
+        # Add logic to check if user exists, hash password, etc.
+        # Example call to a hypothetical CRUD function
+        # db_user = await user_crud.create_db_user(db=db, user=user_in)
+        # if db_user is None:
+        #      raise HTTPException(
+        #          status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        #          detail="Could not create user."
+        #      )
+        # return db_user
+        # Placeholder: Replace with actual logic
+        print(f"Creating user: {user_in.email}")
+        # Assume creation successful for example
+        return UserResponse(id=1, email=user_in.email, is_active=True)
+
+
+    @router.get("/{user_id}", response_model=UserResponse)
+    async def read_user(
+        user_id: int,
+        db: AsyncSession = Depends(get_db_session)
+    ):
+        # Example call to a hypothetical CRUD function
+        # db_user = await user_crud.get_db_user(db=db, user_id=user_id)
+        # if db_user is None:
+        #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        # return db_user
+        # Placeholder: Replace with actual logic
+        print(f"Reading user: {user_id}")
+        if user_id == 1:
+             return UserResponse(id=1, email="test@example.com", is_active=True)
+        else:
+             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    ```
+2.  **Dependency Injection:** Heavily utilize FastAPI's `Depends` system for:
+    * Managing resources (e.g., database sessions).
+    * Handling authentication and authorization logic.
+    * Accessing configuration settings.
+    * Sharing utility services.
+3.  **Error Handling:**
+    * Use `HTTPException` for errors that map directly to HTTP status codes (e.g., 400 Bad Request, 404 Not Found, 403 Forbidden, 500 Internal Server Error). Provide meaningful `detail` messages.
+    * Use `try...except` blocks for handling unexpected errors during processing (e.g., database constraint violations, external API failures). Log these errors thoroughly.
+    * Employ **guard clauses** and **early returns** at the beginning of functions/routes to validate inputs and preconditions. This keeps the main logic path less nested and easier to read. Avoid `else` blocks immediately following a `return` or `raise`.
+    * Consider defining custom exception classes for domain-specific errors and using FastAPI's custom exception handlers for centralized error response formatting.
+4.  **Lifespan Management:** Use the `lifespan` asynchronous context manager with `FastAPI(...)` for managing application startup and shutdown logic (e.g., initializing/closing database connection pools, loading ML models). Avoid the older `@app.on_event("startup")` / `shutdown` decorators.
+    ```python
+    from contextlib import asynccontextmanager
+    from fastapi import FastAPI
+    # Assume db_setup includes init_db_pool and close_db_pool async functions
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI):
+        print("Application starting up...")
+        # await db_setup.init_db_pool() # Initialize resources
+        yield # Application runs here
+        print("Application shutting down...")
+        # await db_setup.close_db_pool() # Clean up resources
+
+    # app = FastAPI(lifespan=lifespan) # Apply to FastAPI instance
+    ```
+5.  **Middleware:** Implement middleware for concerns that apply globally to requests/responses:
+    * Logging request/response details.
+    * Adding security headers (e.g., CORS).
+    * Performance monitoring/timing requests.
+    * Handling global exceptions (as a fallback).
+    * Authentication checks (if not handled per-route via `Depends`).
+6.  **Performance:**
+    * Ensure **all** I/O operations are non-blocking (`async`/`await`).
+    * Implement caching strategies (e.g., using `fastapi-cache2`, Redis, or custom in-memory stores via dependencies) for expensive computations or frequently accessed, rarely changing data.
+    * Optimize database interactions (use async drivers, select only necessary fields, use indexes, consider query batching).
+    * Leverage Pydantic V2's performance improvements for validation and serialization.
+
+### III. Recommended File Structure Example
+
+src/backend/
+├── alembic/            # Alembic migrations (if using SQLAlchemy)
+│   └── versions/
+│   └── env.py
+│   └── script.py.mako
+├── app/                # Main application source code
+│   ├── __init__.py
+│   ├── main.py         # FastAPI app creation, lifespan, main router includes
+│   ├── core/           # Core logic: config, security, etc.
+│   │   ├── __init__.py
+│   │   ├── config.py   # Pydantic settings model
+│   │   └── security.py # Password hashing, JWT handling (example)
+│   ├── db/             # Database setup, session management
+│   │   ├── __init__.py
+│   │   ├── session.py  # Async session maker, dependency getter
+│   │   └── base.py     # Base for ORM models (if using SQLAlchemy)
+│   ├── models/         # SQLAlchemy ORM models (db table representations)
+│   │   ├── __init__.py
+│   │   └── user.py
+│   │   └── item.py
+│   ├── schemas/        # Pydantic schemas (request/response models)
+│   │   ├── __init__.py
+│   │   └── user.py
+│   │   └── item.py
+│   │   └── token.py    # Example for auth tokens
+│   ├── crud/           # CRUD database operations (data access layer)
+│   │   ├── __init__.py
+│   │   ├── base.py     # Base CRUD class (optional)
+│   │   └── crud_user.py
+│   │   └── crud_item.py
+│   ├── services/       # Business logic layer (optional - use if logic complex)
+│   │   ├── __init__.py
+│   │   └── user_service.py
+│   ├── api/            # API Routers
+│   │   ├── __init__.py
+│   │   ├── deps.py     # Common dependencies (e.g., get_current_user)
+│   │   └── v1/         # API versioning (example)
+│   │       ├── __init__.py
+│   │       ├── endpoints/
+│   │       │   ├── __init__.py
+│   │       │   └── users.py  # Contains APIRouter for users
+│   │       │   └── items.py  # Contains APIRouter for items
+│   │       │   └── login.py  # Contains APIRouter for auth
+│   │       └── api.py    # Includes all endpoint routers into a main v1 router
+│   └── tests/          # Pytest tests
+│       ├── __init__.py
+│       ├── conftest.py
+│       └── api/
+│       │   └── v1/
+│       │       └── test_users.py
+│       └── crud/
+│           └── test_user_crud.py
+├── .env                # Environment variables (ignored by git)
+├── .gitignore
+├── pyproject.toml      # Project metadata, dependencies (Poetry or Hatch)
+├── README.md
+└── alembic.ini         # Alembic configuration (if used)
