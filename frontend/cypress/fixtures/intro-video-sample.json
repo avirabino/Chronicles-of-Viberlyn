@@ -1,0 +1,23 @@
+[
+  {
+    "sceneIndex": 0,
+    "title": "Test Scene 1",
+    "imageUrl": "/assets/test/image1.png",
+    "audioUrl": "/assets/test/audio1.mp3",
+    "text": "Narration for scene 1."
+  },
+  {
+    "sceneIndex": 1,
+    "title": "Test Scene 2",
+    "imageUrl": "/assets/test/image2.png",
+    "audioUrl": "/assets/test/audio2.mp3",
+    "text": "Narration for scene 2."
+  },
+  {
+    "sceneIndex": 2,
+    "title": "Test Scene 3",
+    "imageUrl": "/assets/test/image3.png",
+    "audioUrl": "/assets/test/audio3.mp3",
+    "text": "Narration for scene 3. This is the final scene."
+  }
+]

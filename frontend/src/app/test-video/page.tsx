@@ -1,9 +1,9 @@
 // --- Windsurf Metadata ---
 // Assistant: FE_NextJS_Core
 // Created: 2025-04-18
-// Modified: 2025-04-21
+// Modified: 2025-04-29
 // --- End Windsurf Metadata ---
-'use client'; // Mark as client component due to useState/useEffect in VideoPlayer
+'use client'; // Mark as client component due to useState/useEffect
 
 // Adjust import paths if necessary based on your final structure/aliases
 import VideoPlayer from '@/components/VideoPlayer/VideoPlayer';
@@ -64,8 +64,8 @@ export default function TestVideoPage() {
 
   const handleClose = () => {
     console.log("VideoPlayer closed callback triggered (test page)");
-    // In a real app, you might navigate away or update state
-    alert("Video player closed!"); // Simple feedback for testing
+    setShowPlayer(false); // Hide player on close
+    // alert("Video player closed!"); // Optional feedback
   };
 
   const handleStartClick = () => {
@@ -84,22 +84,23 @@ export default function TestVideoPage() {
       return <div className="p-4">No video frames were loaded. Check console for errors.</div>;
   }
 
+  // Use React Fragment to render main content and player as siblings
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Testing Video Player (Local Data)</h1>
-      {!showPlayer && (
-        <button
-          onClick={handleStartClick}
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-xl font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-        >
-          Start Test Video
-        </button>
-      )}
-      {showPlayer && (
-        <div className="border p-2">
-          <VideoPlayer frames={frames} onClose={handleClose} />
-        </div>
-      )}
-    </div>
+    <>
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Testing Video Player (Local Data)</h1>
+        {!showPlayer && (
+          <button
+            onClick={handleStartClick}
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-xl font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+          >
+            Start Test Video
+          </button>
+        )}
+      </div>
+
+      {/* Render VideoPlayer again, conditionally */}
+      {showPlayer && <VideoPlayer frames={frames} onClose={handleClose} />}
+    </>
   );
 }

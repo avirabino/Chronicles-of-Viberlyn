@@ -1,0 +1,37 @@
+[
+  {
+    "sceneIndex": 0,
+    "title": "The Silence Before the Fall",
+    "imageUrl": "/stories/chronicles-of-viberlyn/assets/Scene-1-The-Silence-Before-the-Fall.png",
+    "audioUrl": "/stories/chronicles-of-viberlyn/assets/scene-1.mp3",
+    "text": "Before ruin, there was order. The Ancient Society governed not with swords or kings, but with wisdom etched into stone, and relics powered by forces older than gods. But peace breeds complacency—and the stars grew restless."
+  },
+  {
+    "sceneIndex": 1,
+    "title": "The Ascension of Ash and Crown",
+    "imageUrl": "/stories/chronicles-of-viberlyn/assets/Scene-2-The-Ascension-of-Ash-and-Crown.png",
+    "audioUrl": "/stories/chronicles-of-viberlyn/assets/scene-2.mp3",
+    "text": "From the outer lands came a prophet clad in smoke. They called him the Witch King, though no name ever suited him. He spoke to shadows, promised salvation through domination, and bound a forgotten deity to his will. In fire, he forged a throne—and in terror, he took the sky."
+  },
+  {
+    "sceneIndex": 2,
+    "title": "Whispers Beneath the Banner",
+    "imageUrl": "/stories/chronicles-of-viberlyn/assets/Scene-3-Whispers-Beneath-the-Banner.png",
+    "audioUrl": "/stories/chronicles-of-viberlyn/assets/scene-3.mp3",
+    "text": "Centuries passed under the Empire’s watchful eye. Cities became fortresses, temples became tombs, and magic—true magic—was locked behind blood and allegiance. But not all bowed. In the village of Elderglow, where mist clings to root and ruin, a whisper begins to rise."
+  },
+  {
+    "sceneIndex": 3,
+    "title": "The Wanderer and the Wound",
+    "imageUrl": "/stories/chronicles-of-viberlyn/assets/Scene-4-The-Wanderer-and-the-Wound.png",
+    "audioUrl": "/stories/chronicles-of-viberlyn/assets/scene-4.mp3",
+    "text": "You come not as a chosen one, nor called by fate—but as a question. In lands broken by banners and bound by fear, a single traveler stirs unease in the Empire’s gaze. You are a stranger with no allegiance… and that is power."
+  },
+  {
+    "sceneIndex": 4,
+    "title": "The Relic Whispers Back",
+    "imageUrl": "/stories/chronicles-of-viberlyn/assets/Scene-5-The-Relic-Whispers-Back.png",
+    "audioUrl": "/stories/chronicles-of-viberlyn/assets/scene-5.mp3",
+    "text": "Deep beneath the roots of Elderglow lies what was never meant to be found again. A relic of power, humming with forgotten voices, waiting for the hands of a mortal bold—or foolish—enough to claim it. The past does not sleep. It remembers."
+  }
+]

@@ -1,0 +1,11 @@
+/* --- Windsurf Metadata ---
+// Assistant: FE_NextJS_Core
+// Created: 2025-04-29
+// Modified: 2025-04-29 // Removed empty body rule
+// --- End Windsurf Metadata --- */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* You can add custom global styles below this line */
